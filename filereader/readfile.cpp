@@ -1,6 +1,5 @@
 #include "readfile.h"
 #include <fstream>
-#include <string>
 #include <iostream>
 
 std::string fileio::read(std::string path) {

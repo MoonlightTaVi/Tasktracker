@@ -1,1 +1,1 @@
-{"0":{"name":"sample task","spam":{"lol":"123",},"status":"todo",},"1":{"name":"sample task 2","status":"in-progress",},}
+{"1":{"description":"sampletask","status":"to-do",},"2":{"description":"in-progress","status":"to-do",},"counter":"2",}

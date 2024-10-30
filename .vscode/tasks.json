@@ -11,6 +11,10 @@
                 "${workspaceFolder}\\json\\object.cpp",
                 "${workspaceFolder}\\filereader\\readfile.cpp",
                 "${workspaceFolder}\\filereader\\writefile.cpp",
+                "${workspaceFolder}\\tools\\split.cpp",
+                "${workspaceFolder}\\tools\\starts-with.cpp",
+                "${workspaceFolder}\\tools\\parse-int.cpp",
+                "${workspaceFolder}\\core\\tasktracker.cpp",
                 "${file}",
                 "-o",
                 "${workspaceFolder}\\${fileBasenameNoExtension}.exe"

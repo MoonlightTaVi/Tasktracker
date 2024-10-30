@@ -10,11 +10,14 @@ namespace json {
                 int type = -1;
                 Object objectValue;
                 std::string stringValue;
+                int intValue;
             public:
                 Parameter(Object *objectValue);
                 Parameter (std::string stringValue);
+                Parameter (int intValue);
                 Object* getObjectValue();
                 std::string getStringValue();
+                int getIntValue();
                 int getType();
     };
 

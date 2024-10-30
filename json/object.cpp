@@ -1,7 +1,5 @@
 #include "parameter.h"
 #include "object.h"
-#include <map>
-#include <string>
 #include <iostream>
 
 void json::Object::add(std::string key, json::Parameter* value) {
@@ -12,6 +10,24 @@ void json::Object::add(std::string key, json::Parameter* value) {
 json::Parameter* json::Object::get(std::string key) {
     json::Parameter *temp = &this->body.find(key)->second;
     return temp;
+}
+bool json::Object::has(std::string key) {
+    return this->body.count(key) > 0;
+}
+void json::Object::update(std::string key, json::Parameter *newValue) {
+    if (!this->has(key)) {
+        return;
+    }
+    this->remove(key);
+    Parameter temp = *newValue;
+    //this->body[key] = temp;
+    body.insert(std::pair<std::string,json::Parameter>(key, temp));
+}
+void json::Object::remove(std::string key) {
+    this->body.erase(key);
+}
+std::map<std::string, json::Parameter> json::Object::getBody() {
+    return this->body;
 }
 std::string json::Object::toString(int indent) {
     std::string prefix = "";
@@ -44,6 +60,11 @@ std::string json::Object::stringify() {
             case 1:
             {
                 ret += "\"" + it->second.getStringValue() += "\"";
+                break;
+            }
+            case 2:
+            {
+                ret += "\"" + std::to_string(it->second.getIntValue()) += "\"";
                 break;
             }
             default:

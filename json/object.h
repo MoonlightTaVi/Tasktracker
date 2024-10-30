@@ -12,6 +12,10 @@ namespace json {
         public:
             void add(std::string key, Parameter *value);
             Parameter* get(std::string key);
+            bool has(std::string key);
+            void update(std::string key, Parameter *newValue);
+            void remove(std::string key);
+            std::map<std::string, Parameter> getBody();
             std::string toString(int indent);
             std::string stringify();
     };
