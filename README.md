@@ -1,6 +1,6 @@
 # Task tracker (C++)
 ## Made for [roadmap.sh](https://roadmap.sh/projects/task-tracker)
-### Current status: work-in-progress (as of 2024.10.29)
+### Current status: work-in-progress (2024.10.29-2024.10.30)
 ## Requirements (taken from the site)
 The application should run from the command line, accept user actions and inputs as arguments, and store the tasks in a JSON file. The user should be able to:
 
@@ -29,3 +29,15 @@ Here are some constraints to guide the implementation:
 1. Stringify objects
 1. Write to file
 1. User interface with the features, corresponding to the task
+<br>
+
+# UPD 2024.10.30
+## Done
+1. Writing to file, removing if needed
+1. Stringifying objects (with a trailing comma at the moment)
+1. Tested, works fine so far
+## To do
+1. Split the string by a delimiter (a single character) -> needed for parsing positional arguments
+1. Remove parameters from the object
+1. Update parameters of the object
+1. Get datetime

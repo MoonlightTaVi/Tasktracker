@@ -10,6 +10,7 @@
                 "${workspaceFolder}\\json\\parameter.cpp",
                 "${workspaceFolder}\\json\\object.cpp",
                 "${workspaceFolder}\\filereader\\readfile.cpp",
+                "${workspaceFolder}\\filereader\\writefile.cpp",
                 "${file}",
                 "-o",
                 "${workspaceFolder}\\${fileBasenameNoExtension}.exe"

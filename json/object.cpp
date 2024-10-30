@@ -30,6 +30,33 @@ std::string json::Object::toString(int indent) {
     }
     return ret;
 }
+std::string json::Object::stringify() {
+    std::string ret = "{";
+    std::map<std::string, json::Parameter>::iterator it;
+    for (it = this->body.begin(); it != this->body.end(); it++) {
+        ret += "\"" + it->first + "\":";
+        switch (it->second.getType()) {
+            case 0:
+            {
+                ret += it->second.getObjectValue()->stringify();
+                break;
+            }
+            case 1:
+            {
+                ret += "\"" + it->second.getStringValue() += "\"";
+                break;
+            }
+            default:
+            {
+                std::cerr << "Error stringifying object.\n";
+                return "";
+            }
+        }
+        ret += ",";
+    }
+    ret += "}";
+    return ret;
+}
 
 void json::createObject(json::Object &saveTo, std::string &src, int &start) {
     std::string currentKey = "";
@@ -97,7 +124,7 @@ void json::createObject(json::Object &saveTo, std::string &src, int &start) {
             }
             case '}':
             {
-                if (currentKey != "" || currentStringValue != "") {
+                if (currentKey != "" && currentStringValue != "") {
                     json::Parameter newParam = json::Parameter(currentStringValue);
                     json::Parameter *newParamP = &newParam;
                     saveTo.add(currentKey, newParamP);

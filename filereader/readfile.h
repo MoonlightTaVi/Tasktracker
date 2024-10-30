@@ -1,3 +1,5 @@
 #include <string>
 
-std::string read(std::string path);
+namespace fileio {
+    std::string read(std::string path);
+}

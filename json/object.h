@@ -13,6 +13,7 @@ namespace json {
             void add(std::string key, Parameter *value);
             Parameter* get(std::string key);
             std::string toString(int indent);
+            std::string stringify();
     };
 
     void createObject(Object &saveTo, std::string &src, int &start);
