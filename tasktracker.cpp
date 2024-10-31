@@ -6,19 +6,20 @@ int main() {
         std::string command = "";
         while (true) {
             try {
-                std::cout << "task-cli >:";
+                std::cout << "task-cli >>> ";
                 std::getline(std::cin, command);
-                if (!str::startsWith(command, "break")) {
+                if (!str::startsWith(command, "quit")) {
                     tm.execute(command);
+                    std::cout << std::endl;
                 } else {
                     break;
                 }
             } catch (const std::exception &err) {
-                std::cerr << "Encountered error when processing the command:\n\t" << err.what() << "\n";
+                std::cerr << "[ERROR] Encountered error when processing the command:\n\t" << err.what() << "\n";
             }
         }
     } catch (const std::exception &err) {
-        std::cerr << "Encountered error during initialization:\n\t" << err.what() << "\n";
+        std::cerr << "[ERROR] Encountered error during initialization:\n\t" << err.what() << "\n";
     }
     return 0;
 }

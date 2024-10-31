@@ -9,9 +9,9 @@ std::string fileio::read(std::string path) {
         while (file) {
             ret += file.get();
         }
-        std::cout << "Successfully read data from \"" << path << "\".\n";
+        std::cout << "[INFO] Successfully read data from \"" << path << "\".\n";
     } else {
-        std::cerr << "Could not open the file: \"" << path << "\".\n";
+        std::cerr << "[ERROR] Could not open the file: \"" << path << "\".\n";
     }
     return ret;
 }

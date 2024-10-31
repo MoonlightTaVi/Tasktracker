@@ -6,19 +6,19 @@
 void fileio::write(std::string path, std::string output) {
     try {
         if (std::filesystem::remove(path)) {
-            std::cout << "File \"" << path << "\" was removed for rewriting.\n";
+            std::cout << "[INFO] File \"" << path << "\" was removed for rewriting.\n";
         } else {
-            std::cout << "File \"" << path << "\" not found.\n";
+            std::cout << "[INFO] File \"" << path << "\" not found.\n";
         }
     } catch (const std::filesystem::filesystem_error &err) {
-        std::cerr << "Filesystem error:\n\t" << err.what() << "\n";
+        std::cerr << "[ERROR] Filesystem error:\n\t" << err.what() << "\n";
     }
     std::ofstream file(path);
     if (file.is_open()) {
         file << output;
         file.close();
-        std::cout << "Successfully saved data to \"" << path << "\".\n";
+        std::cout << "[INFO] Successfully saved data to \"" << path << "\".\n";
     } else {
-        std::cerr << "Could not write to file: \"" << path << "\".\n";
+        std::cerr << "[ERROR] Could not write to file: \"" << path << "\".\n";
     }
 }
