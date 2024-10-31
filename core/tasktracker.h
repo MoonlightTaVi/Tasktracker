@@ -8,8 +8,9 @@
 #include "../tools/starts-with.h"
 #include "../tools/parse-int.h"
 #include <vector>
-#include <iostream>
 #include <string>
+#include <stdio.h>
+#include <iostream>
 
 namespace taskscore {
     class Taskmanager {

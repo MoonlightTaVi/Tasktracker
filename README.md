@@ -1,6 +1,6 @@
 # Task tracker (C++)
 ## Made for [roadmap.sh](https://roadmap.sh/projects/task-tracker)
-### Current status: work-in-progress (2024.10.29-2024.10.30)
+### Current status: work-in-progress (2024.10.29-2024.10.31)
 ## Requirements (taken from the site)
 The application should run from the command line, accept user actions and inputs as arguments, and store the tasks in a JSON file. The user should be able to:
 
@@ -41,3 +41,11 @@ Here are some constraints to guide the implementation:
 1. Remove parameters from the object
 1. Update parameters of the object
 1. Get datetime
+<br>
+
+# UPD 2024.10.31
+## Done
+1. The program is finished and tested (so far)
+## To do
+1. Ask user whether they want to delete a task (I always mix up "done" and "complete", resulting in deleting the task, which is "delete" (I just type "d"))
+1. Add comments, some minor fixes

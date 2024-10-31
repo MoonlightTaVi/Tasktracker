@@ -1,14 +1,13 @@
 #include "writefile.h"
 #include <fstream>
-#include <iostream>
 #include <filesystem>
 
 void fileio::write(std::string path, std::string output) {
     try {
         if (std::filesystem::remove(path)) {
-            std::cout << "[INFO] File \"" << path << "\" was removed for rewriting.\n";
+            printf("[INFO] File \"%s\" was removed for rewriting.\n", path.c_str());
         } else {
-            std::cout << "[INFO] File \"" << path << "\" not found.\n";
+            printf("[INFO] File \"%s\" not found.\n", path.c_str());
         }
     } catch (const std::filesystem::filesystem_error &err) {
         std::cerr << "[ERROR] Filesystem error:\n\t" << err.what() << "\n";
@@ -17,8 +16,8 @@ void fileio::write(std::string path, std::string output) {
     if (file.is_open()) {
         file << output;
         file.close();
-        std::cout << "[INFO] Successfully saved data to \"" << path << "\".\n";
+        printf("[INFO] Successfully saved data to \"%s\".\n", path.c_str());
     } else {
-        std::cerr << "[ERROR] Could not write to file: \"" << path << "\".\n";
+        printf("[ERROR] Could not write to file: \"%s\".\n", path.c_str());
     }
 }

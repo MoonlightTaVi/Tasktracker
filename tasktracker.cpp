@@ -4,6 +4,7 @@ int main() {
     try {
         taskscore::Taskmanager tm = taskscore::Taskmanager();
         std::string command = "";
+        std::cout << "Type \"quit\" to quit the programm." << std::endl << std::endl;
         while (true) {
             try {
                 std::cout << "task-cli >>> ";

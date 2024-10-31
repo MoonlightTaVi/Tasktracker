@@ -1,4 +1,5 @@
 #include "tasktracker.h"
+#include "../tools/datetime.h"
 
 taskscore::Taskmanager::Taskmanager() {
     std::string readfile = fileio::read("tasks.json");
@@ -16,10 +17,19 @@ taskscore::Taskmanager::Taskmanager() {
         this->tasks.add("counter", counterPtr);
     }
     this->counter = this->tasks.get("counter")->getIntValue();
+
+    std::cout << "Possible commands:\n\tnew {description of the task to add}";
+    std::cout << "\n\tupdate {task ID} {the new description of the task}";
+    std::cout << "\n\tdelete {the ID of the task you want to delete}";
+    std::cout << "\n\tstart {the ID of the task you want to set as \"in-progress\"}";
+    std::cout << "\n\tcomplete {the ID of the task you want to set as \"done\"}";
+    std::cout << "\n\tlist (show all tasks)";
+    std::cout << "\n\tlist {filter} (show filtered tasks, where filter can be one of the following: \"to-do\", \"in-progress\", \"done\")";
+    std::cout << "\nYou can also use shortcuts for the commands and the filters, for example \"l i\" is the same as \"list in-progress\"" << std::endl << std::endl;
 }
 
 void taskscore::Taskmanager::execute(std::string line) {
-    std::vector<std::string> commands = {"new", "update", "delete", "start", "done", "list"};
+    std::vector<std::string> commands = {"new", "update", "delete", "start", "complete", "list"};
     std::vector<std::string> split = {};
     str::split(split, line, " ");
     if (split.size() == 0) {
@@ -37,11 +47,11 @@ void taskscore::Taskmanager::execute(std::string line) {
             return;
         }
         if (str::parseInt(split[1]) < 0) {
-            std::cerr << "[ERROR] Could not convert the second argument (" << split[1] <<") to the positive integer.\n";
+            printf("[ERROR] Could not convert the second argument (%s) to the positive integer.\n", split[1].c_str());
             return;
         }
         if (!this->tasks.has(split[1])) {
-            std::cerr << "[ERROR] Could not find the task with the id of " << split[1] <<".\n";
+            printf("[ERROR] Could not find the task with the id of %s.\n", split[1].c_str());
             return;
         }
     }
@@ -68,7 +78,7 @@ void taskscore::Taskmanager::execute(std::string line) {
         this->markTask(split[1], "in-progress");
         return;
     }
-    if (command == "done") {
+    if (command == "complete") {
         this->markTask(split[1], "done");
         return;
     }
@@ -92,6 +102,10 @@ void taskscore::Taskmanager::execute(std::string line) {
         if (split.size() >= 2) {
             filter = split[1];
         }
+        if (filter != "") {
+            std::vector<std::string> statuses = {"to-do", "in-progress", "done"};
+            filter = str::findLeftMatch(statuses, filter);
+        }
         this->listTasks(filter);
     }
 }
@@ -104,53 +118,65 @@ void taskscore::Taskmanager::addTask(std::string description) {
     newTask->add("description", newDescription);
     json::Parameter *newStatus = new json::Parameter("to-do");
     newTask->add("status", newStatus);
+    json::Parameter *newCreated = new json::Parameter(str::getDateTime());
+    newTask->add("created", newCreated);
+    json::Parameter *newUpdated = new json::Parameter("never updated");
+    newTask->add("updated", newUpdated);
     json::Parameter *newTaskParameter = new json::Parameter(newTask);
     this->tasks.add(newId, newTaskParameter);
     json::Parameter *newCounter = new json::Parameter(this->counter);
     this->tasks.update("counter", newCounter);
-    std::cout << "> Successfully added a new task with the ID of " << newId << " and the following description: \"" << description << "\".\n";
+    printf("> Successfully added a new task with the ID of %s and the following description: \"%s\".\n", newId.c_str(), description.c_str());
     this->save();
 }
 
 void taskscore::Taskmanager::updateTask(std::string id, std::string newDescription) {
-    json::Parameter *newParameter = new json::Parameter(newDescription);
-    this->tasks.get(id)->getObjectValue()->update("description", newParameter);
-    std::cout << "> Updated task {" << id << "}'s description to: \"" << newDescription << "\".\n";
+    json::Parameter *newParamDescription = new json::Parameter(newDescription);
+    this->tasks.get(id)->getObjectValue()->update("description", newParamDescription);
+    json::Parameter *newParamUpdated = new json::Parameter(str::getDateTime());
+    this->tasks.get(id)->getObjectValue()->update("updated", newParamUpdated);
+    printf("> Updated task {%s}'s description to: \"%s\".\n", id.c_str(), newDescription.c_str());
     this->save();
 }
 
 void taskscore::Taskmanager::deleteTask(std::string id) {
     this->tasks.remove(id);
-    std::cout << "> Task {" << id << "} was successfully deleted.\n";
+    printf("> Task {%s} was successfully deleted.\n", id.c_str());
     this->save();
 }
 
 void taskscore::Taskmanager::markTask(std::string id, std::string status) {
     json::Parameter *newParameter = new json::Parameter(status);
     this->tasks.get(id)->getObjectValue()->update("status", newParameter);
-    std::cout << "> Updated task {" << id << "}'s status to: \"" << status << "\".\n";
+    json::Parameter *newParamUpdated = new json::Parameter(str::getDateTime());
+    this->tasks.get(id)->getObjectValue()->update("updated", newParamUpdated);
+    printf("> Updated the status of the task with the ID of {%s} and the description of \"%s\"  to: \"%s\".\n", id.c_str(), this->tasks.get(id)->getObjectValue()->get("description")->getStringValue().c_str(), status.c_str());
     this->save();
 }
 
 void taskscore::Taskmanager::listTasks(std::string filter) {
-    std::cout << "> List of tasks filtered as \"" << filter << "\":\n";
+    printf("> List of tasks filtered as \"%s\":\n", filter.c_str());
     std::map<std::string, json::Parameter> map = this->tasks.getBody();
     std::map<std::string, json::Parameter>::iterator it;
     int count = 0;
     for (it = map.begin(); it != map.end(); it++) {
         if (it->first != "counter") {
+            std::string created = it->second.getObjectValue()->get("created")->getStringValue();
+            std::string updated = it->second.getObjectValue()->get("updated")->getStringValue();
             std::string description = it->second.getObjectValue()->get("description")->getStringValue();
             std::string status = it->second.getObjectValue()->get("status")->getStringValue();
             if (str::startsWith(status, filter)) {
-                std::cout << "Task #" << it->first << ":\n";
-                std::cout << "\tDescription: \"" << description << "\";\n";
-                std::cout << "\tStatus: " << status << ".\n";
+                printf("Task #%s:\n", it->first.c_str());
+                printf("\tCreated at: %s;\n", created.c_str());
+                printf("\tUpdated at: %s;\n", updated.c_str());
+                printf("\tDescription: \"%s\";\n", description.c_str());
+                printf("\tStatus: %s.\n", status.c_str());
                 count++;
             }
         }
     }
-    std::cout << "> Found tasks after filtering: " << count << ".\n";
-    std::cout << "> Overall tasks: " << this->counter << ".\n";
+    printf("> Found tasks after filtering: %d.\n", count);
+    printf("> Overall tasks (including deleted): %d.\n", this->counter);
 }
 
 void taskscore::Taskmanager::save() {

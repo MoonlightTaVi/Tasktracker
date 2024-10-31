@@ -86,6 +86,15 @@ void json::createObject(json::Object &saveTo, std::string &src, int &start) {
     bool isEditingValue = false;
     bool metQuotation = false;
     for (int i = start; i < src.length(); i++) {
+        if (metQuotation && src[i] != '"') {
+            if (isEditingKey) {
+                currentKey += src[i];
+            }
+            if (isEditingValue) {
+                currentStringValue += src[i];
+            }
+            continue;
+        }
         switch (src[i])
         {
             case '{':

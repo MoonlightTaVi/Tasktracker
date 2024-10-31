@@ -1,6 +1,5 @@
 #include "readfile.h"
 #include <fstream>
-#include <iostream>
 
 std::string fileio::read(std::string path) {
     std::string ret = "";
@@ -9,9 +8,9 @@ std::string fileio::read(std::string path) {
         while (file) {
             ret += file.get();
         }
-        std::cout << "[INFO] Successfully read data from \"" << path << "\".\n";
+        printf("[INFO] Successfully read data from \"%s\".\n", path.c_str());
     } else {
-        std::cerr << "[ERROR] Could not open the file: \"" << path << "\".\n";
+        printf("[INFO] Could not open the file: \"%s\" (probably does not exist).\n", path.c_str());
     }
     return ret;
 }
