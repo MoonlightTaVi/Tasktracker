@@ -1,4 +1,4 @@
-#include "starts-with.h"
+#include "starts-with.h" // Look at this header for some explanation
 
 bool str::startsWith(std::string text, std::string left) {
     const int textLength = text.length();

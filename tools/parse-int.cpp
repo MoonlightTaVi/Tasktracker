@@ -1,4 +1,4 @@
-#include "parse-int.h"
+#include "parse-int.h" // Look at this header for some explanation
 
 int str::parseInt(std::string source) {
     try {

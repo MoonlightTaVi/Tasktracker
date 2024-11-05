@@ -1,4 +1,4 @@
-#include "split.h"
+#include "split.h" // Look at this header for some explanation
 
 void str::split(std::vector<std::string> &out, std::string &source, const char *delimiterPointer) {
     out.clear();

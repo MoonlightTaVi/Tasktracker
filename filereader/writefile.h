@@ -1,4 +1,4 @@
-#ifndef _file_write_
+#ifndef _file_write_ // Include guards protect from circular dependency injection
 #define _file_write_
 
 #include <string>

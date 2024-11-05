@@ -1,4 +1,4 @@
-#ifndef _file_read_
+#ifndef _file_read_ // Include guards protect from circular dependency injection
 #define _file_read_
 
 #include <string>

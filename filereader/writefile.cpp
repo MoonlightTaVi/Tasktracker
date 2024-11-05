@@ -2,7 +2,7 @@
 #include <fstream>
 #include <filesystem>
 
-void fileio::write(std::string path, std::string output) {
+void fileio::write(std::string path, std::string output) { // Write a string to a file
     try {
         if (std::filesystem::remove(path)) {
             printf("[INFO] File \"%s\" was removed for rewriting.\n", path.c_str());

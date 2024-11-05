@@ -1,18 +1,18 @@
-#include "core/tasktracker.h"
+#include "core/tasktracker.h" // This has all the neccessary includes
 
 int main() {
     try {
-        taskscore::Taskmanager tm = taskscore::Taskmanager();
+        tasks::Tasktracker tracker = tasks::Tasktracker(); // This is the main class
         std::string command = "";
         std::cout << "Type \"quit\" to quit the programm." << std::endl << std::endl;
         while (true) {
             try {
                 std::cout << "task-cli >>> ";
-                std::getline(std::cin, command);
+                std::getline(std::cin, command); // getline allows multi-word input
                 if (!str::startsWith(command, "quit")) {
-                    tm.execute(command);
+                    tracker.execute(command); // The method to process the input
                     std::cout << std::endl;
-                } else {
+                } else { // Break the loop on "quit"
                     break;
                 }
             } catch (const std::exception &err) {

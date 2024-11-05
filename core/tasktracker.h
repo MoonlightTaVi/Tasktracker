@@ -1,6 +1,7 @@
-#ifndef _core_
+#ifndef _core_ // Include guards protect from circular dependency injection
 #define _core_
 
+// All the includes
 #include "../json/parameter.h"
 #include "../filereader/readfile.h"
 #include "../filereader/writefile.h"
@@ -12,13 +13,13 @@
 #include <stdio.h>
 #include <iostream>
 
-namespace taskscore {
-    class Taskmanager {
+namespace tasks {
+    class Tasktracker {
         private:
-            int counter = 0;
+            int counter = 0; // Overall number of tasks (including deleted, needed for the new task ID calculation)
             json::Object tasks = json::Object();
         public:
-            Taskmanager();
+            Tasktracker(); // Look at tasktracker.cpp for realization
             void execute(std::string line);
             void addTask(std::string description);
             void updateTask(std::string id, std::string description);

@@ -1,4 +1,4 @@
-#include "parameter.h"
+#include "parameter.h" // Look at this header for some explanation
 #include "../tools/parse-int.h"
 
 json::Parameter::Parameter (json::Object* objectValue) {
@@ -30,9 +30,9 @@ std::string json::Parameter::getStringValue() {
 }
 int json::Parameter::getIntValue() {
     if (this->type != 2) {
-        if (this->type == 1) {
+        if (this->type == 1) { // We can try to parse a string to an int
             int temp = str::parseInt(this->stringValue);
-            if (temp != -1) {
+            if (temp != -1) { // If succeded
                 this->intValue = temp;
                 this->type = 2;
                 return this->intValue;
